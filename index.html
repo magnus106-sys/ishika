@@ -2,194 +2,336 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Special for Ishika (MY LADY)</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: none; }
-        body { background: #000; overflow: hidden; font-family: 'Comic Sans MS', cursive; color: white; }
-
-        /* Binary Matrix Background */
-        #matrix { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.6; }
-
-        /* Loader with Glow */
-        #loader { 
-            position: fixed; width: 100%; height: 100%; display: flex; 
-            justify-content: center; align-items: center;
-            font-size: 8rem; color: #ff4d6d; z-index: 1000;
-            background: #000; text-shadow: 0 0 20px #ff4d6d;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-
-        /* Book Container */
-        .book-container { 
-            width: 100vw; height: 100vh; display: none; 
-            justify-content: center; align-items: center; 
-            perspective: 2500px; z-index: 100; position: relative;
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            perspective: 1000px;
         }
-        .book { width: 300px; height: 450px; position: relative; transform-style: preserve-3d; }
-        .page {
-            position: absolute; width: 100%; height: 100%; background: #fffafa; border: 4px solid #ff85a1;
-            border-radius: 12px 20px 20px 12px; transform-origin: left; 
-            transition: transform 0.8s ease-in-out;
-            backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; padding: 25px;
-            box-shadow: 5px 5px 20px rgba(0,0,0,0.5); 
-            background-image: radial-gradient(#ffccd5 1px, transparent 1px); background-size: 15px 15px;
+        /* Matrix-like falling text background for Ishika */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.15;
+            pointer-events: none;
+            overflow: hidden;
+            font-family: monospace;
+            font-size: 14px;
         }
-        .flipped { transform: rotateY(-160deg); z-index: 0 !important; }
-        .page img { width: 160px; height: 160px; object-fit: contain; margin: 10px 0; border-radius: 10px; background: #eee; }
-        h2 { color: #d00000; font-size: 1.3rem; text-align: center; margin-bottom: 5px; }
-        p { color: #444; font-weight: bold; text-align: center; margin: 5px 0; font-size: 0.85rem; }
-
-        /* Proposal Section */
-        #proposalSection {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 2000; flex-direction: column; 
-            align-items: center; justify-content: center; padding: 20px;
+        .matrix-column {
+            position: absolute;
+            top: -100px;
+            color: #ff3366;
+            text-align: center;
+            white-space: nowrap;
+            animation: fall linear infinite;
         }
-        .img-frame {
-            width: 280px; height: 280px; border: 4px solid #ff4d6d; border-radius: 20px;
-            overflow: hidden; margin-bottom: 20px; box-shadow: 0 0 15px #ff4d6d; background: #222;
+        @keyframes fall {
+            0% { transform: translateY(-100px); }
+            100% { transform: translateY(110vh); }
         }
-        #coupleImg { width: 100%; height: 100%; object-fit: cover; }
-        .btn-group { display: flex; gap: 15px; margin-top: 10px; }
-        .ans-btn { padding: 10px 30px; border-radius: 25px; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; }
-        #yesBtn { background: #2ecc71; color: white; }
-        #noBtn { background: #e74c3c; color: white; position: relative; }
-
-        .heart { position: fixed; color: #ff4d6d; font-size: 20px; pointer-events: none; animation: fall linear forwards; z-index: 3000; }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+        .container {
+            position: relative;
+            width: 90%;
+            max-width: 400px;
+            height: 600px;
+            z-index: 2;
+        }
+        .card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            border-radius: 20px;
+            padding: 25px 20px;
+            box-shadow: 0 15px 35px rgba(255, 51, 102, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s;
+            transform-origin: left center;
+            backface-visibility: hidden;
+        }
+        .card.hidden {
+            transform: rotateY(-100deg);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .card h1 {
+            color: #ff3366;
+            font-size: 28px;
+            font-family: 'Georgia', serif;
+            margin-bottom: 5px;
+        }
+        .card h2 {
+            color: #ff3366;
+            font-size: 24px;
+            margin-bottom: 5px;
+            font-family: 'Georgia', serif;
+        }
+        .img-container {
+            width: 100%;
+            height: 230px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #eee;
+            margin: 10px 0;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .message {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #555;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        .shayari-box {
+            background: rgba(255, 51, 102, 0.08);
+            border-left: 4px solid #ff3366;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 14px;
+            color: #444;
+            line-height: 1.6;
+            font-weight: 500;
+            text-align: center;
+            width: 100%;
+        }
+        .hint {
+            font-size: 13px;
+            color: #aaa;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        /* Buttons Styling */
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .btn-yes {
+            background: #2ecc71;
+            color: white;
+        }
+        .btn-yes:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4);
+        }
+        .btn-no {
+            background: #e74c3c;
+            color: white;
+            position: relative;
+        }
     </style>
 </head>
 <body>
 
-    <canvas id="matrix"></canvas>
-    <div id="loader">3</div>
+    <!-- Falling Names Background -->
+    <div class="matrix-bg" id="matrix"></div>
 
-    <div class="book-container" id="bookCont">
-        <div class="book">
-            <div class="page" id="p4" style="z-index: 1;">
-                <img src="https://media.tenor.com/7S8Yx_uGstgAAAAj/tkthao219-bubududu.gif">
-                <h2>Ye hui na baat! ❤️</h2>
-                <p>Happy Birthday, Ishika (MY LADY)! 🎉</p>
-                <button onclick="showProposal()" style="margin-top:15px; padding:10px 20px; background:#ff4d6d; color:white; border:none; border-radius:20px; font-weight:bold;">Click for Surprise ✨</button>
+    <div class="container">
+        <!-- Card 1 -->
+        <div class="card" id="card1">
+            <h1>To My Lady,</h1>
+            <div class="img-container">
+                <img src="gif1.gif" alt="Cute Cat Animation">
             </div>
+            <p class="message">Kuch baatein lafzon mein bayaan nahi hoti... Isliye yeh chhota sa surprise tumhaare liye!</p>
+            <p class="hint">Swipe left to open ❤️</p>
+        </div>
 
-            <div class="page" id="p3" style="z-index: 2;">
-                <img src="https://media.tenor.com/vH_p1T0h47AAAAAj/peach-cat-dancing.gif">
-                <p>Type karo aur Swipe karo:</p>
-                <input type="text" id="taskInput" style="width: 100%; padding: 8px; border-radius: 10px; border: 2px solid #ff4d6d; text-align: center; font-size: 0.8rem;" placeholder="Type here...">
-                <p style="font-size: 0.7rem; color: #ff4d6d;">"sohel is the best i love you"</p>
-                <p style="margin-top: 10px; font-size: 0.7rem;">[ Swipe Left ]</p>
+        <!-- Card 2 -->
+        <div class="card hidden" id="card2">
+            <h2>Happy Birthday Ishika! 🎂</h2>
+            <div class="img-container">
+                <img src="gif2.gif" alt="Panda Animation">
             </div>
-
-            <div class="page" id="p2" style="z-index: 3;">
-                <img src="https://media.tenor.com/zW-3A_w5M3oAAAAj/mochi-mochi.gif">
-                <h2>Bohot special ho! 🎂</h2>
-                <p>Ishika, you are truly amazing! 🎉</p>
-                <p style="margin-top: 40px; font-size: 0.7rem;">[ Swipe left ]</p>
+            <div class="shayari-box">
+                "Tamanna karte ho aap jin khushiyon ki,<br>
+                Woh khushiyan aapke kadmon mein ho,<br>
+                Khuda aapko woh sab kuch de jo aap chaho,<br>
+                Har khwab poora aapka is jahan mein ho!" ✨
             </div>
+            <p class="message">Tum bohot special ho! Meri life mein tumhaari jagah koi nahi le sakta.</p>
+            <p class="hint">[ Swipe left ]</p>
+        </div>
 
-            <div class="page" id="p1" style="z-index: 4;">
-                <h2 style="margin-top: 10px;">To My Lady,</h2>
-                <h1 style="color: #ff0055; font-size: 2rem; text-align: center;">ISHIKA</h1>
-                <img src="https://media.tenor.com/970R1XoZ_XIAAAAj/mochi-cat-love.gif">
-                <p style="font-size: 0.8rem;">Swipe left to open ❤️</p>
+        <!-- Card 3 (Proposal Card) -->
+        <div class="card hidden" id="card3">
+            <h2>Do you love me? 🥺</h2>
+            <div class="img-container" id="proposal-img-box">
+                <img src="propose.jpg" id="proposal-img" alt="Anime Couple Propose">
+            </div>
+            <p class="message" id="proposal-text">Kya tum hamesha mere sath rahogi?</p>
+            <div class="shayari-box" id="success-shayari" style="display: none;">
+                "Dua hai ki har lamha aapka haseen ho,<br>
+                Aapke hothon par hamesha khushi ka yaqeen ho,<br>
+                Hum rahein ya na rahein is duniya mein,<br>
+                Aapki zindagi mein pyaar sabse behtareen ho!" ❤️
+            </div>
+            <div class="btn-container" id="btn-box">
+                <button class="btn btn-yes" onclick="accepted()">YES! 💖</button>
+                <button class="btn btn-no" id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NO 💔</button>
             </div>
         </div>
-    </div>
-
-    <div id="proposalSection">
-        <h2 id="questText" style="margin-bottom: 15px;">Do you love me? 🥺</h2>
-        <div class="img-frame">
-            <img id="coupleImg" src="https://i.ibb.co/zV2x15cm/de8faf6d7ebf50ac7b67a243b9ddd569.jpg" alt="Hug"> 
-        </div>
-        <div id="btns" class="btn-group">
-            <button id="yesBtn" class="ans-btn" onclick="sayYes()">YES! ❤️</button>
-            <button id="noBtn" class="ans-btn" onclick="handleNo()">NO 💔</button>
-        </div>
-        <p id="msgText" style="margin-top: 15px; color: #ff4d6d; text-align: center; font-weight: bold;"></p>
     </div>
 
     <script>
-        // Matrix Logic
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const letters = "01 ISHIKA ❤️";
-        const drops = Array(Math.floor(canvas.width / 16)).fill(1);
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#ff4d6d"; ctx.font = "15px monospace";
-            drops.forEach((y, i) => {
-                const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                ctx.fillText(text, i * 16, y * 16);
-                if (y * 16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            });
-        }
-        setInterval(drawMatrix, 50);
+        // Matrix Background Effect
+        const matrixContainer = document.getElementById('matrix');
+        const words = ["ISHIKA", "I ❤️ U", "MY LADY", "KHUSHSO", "KISS", "HUG"];
+        const columnCount = Math.floor(window.innerWidth / 50);
 
-        // Countdown & Preloader
-        let count = 3;
-        const loaderEl = document.getElementById('loader');
-        const bookCont = document.getElementById('bookCont');
-
-        const timer = setInterval(() => {
-            count--;
-            if(count > 0) loaderEl.innerText = count;
-            else { 
-                clearInterval(timer); 
-                loaderEl.style.display = 'none'; 
-                bookCont.style.display = 'flex'; 
+        for (let i = 0; i < columnCount; i++) {
+            const column = document.createElement('div');
+            column.className = 'matrix-column';
+            column.style.left = `${i * (100 / columnCount)}%`;
+            
+            let columnText = "";
+            for(let j=0; j<20; j++) {
+                columnText += words[Math.floor(Math.random() * words.length)] + "<br>";
             }
-        }, 1000);
+            column.innerHTML = columnText;
+            
+            column.style.animationDuration = `${5 + Math.random() * 5}s`;
+            column.style.animationDelay = `${Math.random() * 5}s`;
+            matrixContainer.appendChild(column);
+        }
 
-        // Interaction Logic
-        let startX = 0; let currentPage = 1;
-        document.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+        // Card Swiping Logic
+        let currentCard = 1;
+        let startX = 0;
+
+        document.addEventListener('touchstart', e => {
+            startX = e.touches[0].clientX;
+        });
+
         document.addEventListener('touchend', e => {
             let endX = e.changedTouches[0].clientX;
-            if (startX - endX > 40) {
-                if(currentPage === 3) {
-                    const input = document.getElementById('taskInput').value.toLowerCase().trim();
-                    if(input === "sohel is the best i love you") flip(3);
-                } else if(currentPage < 4) {
-                    flip(currentPage);
-                }
+            if (startX - endX > 50) { // Swipe Left
+                nextCard();
             }
         });
 
-        function flip(id) {
-            const p = document.getElementById('p' + id);
-            if(p) {
-                p.classList.add('flipped');
-                currentPage++;
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if(e.target.tagName !== 'BUTTON' && currentCard < 3) {
+                    nextCard();
+                }
+            });
+        });
+
+        function nextCard() {
+            if (currentCard === 1) {
+                document.getElementById('card1').classList.add('hidden');
+                document.getElementById('card2').classList.remove('hidden');
+                currentCard = 2;
+            } else if (currentCard === 2) {
+                document.getElementById('card2').classList.add('hidden');
+                document.getElementById('card3').classList.remove('hidden');
+                currentCard = 3;
             }
         }
 
-        function showProposal() {
-            bookCont.style.display = 'none';
-            document.getElementById('proposalSection').style.display = 'flex';
-        }
-
-        function handleNo() {
-            const btn = document.getElementById('noBtn');
-            btn.style.position = 'fixed';
-            btn.style.left = Math.random() * 60 + 'vw';
-            btn.style.top = Math.random() * 70 + 'vh';
-        }
-
-        function sayYes() {
-            document.getElementById('questText').innerText = "I knew it! ❤️";
-            document.getElementById('coupleImg').src = "https://i.ibb.co/5CP0YCB/9b0be5cc120c5c6507bc9a7462a512ab.jpg";
-            document.getElementById('msgText').innerText = "I love you too My Lady! 😘";
-            document.getElementById('btns').style.display = 'none';
+        // No Button Running Logic
+        function moveNoButton() {
+            const noBtn = document.getElementById('noBtn');
+            const card3 = document.getElementById('card3');
             
-            setInterval(() => {
-                const h = document.createElement('div'); h.innerHTML = '❤️'; h.className = 'heart';
-                h.style.left = Math.random() * 100 + 'vw'; h.style.animationDuration = Math.random() * 2 + 2 + 's';
-                document.body.appendChild(h); setTimeout(() => h.remove(), 4000);
-            }, 150);
+            const maxX = card3.clientWidth - noBtn.clientWidth - 40;
+            const maxY = card3.clientHeight - noBtn.clientHeight - 40;
+            
+            const randomX = Math.floor(Math.random() * maxX) + 20;
+            const randomY = Math.floor(Math.random() * maxY) + 20;
+            
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        // Yes Button Success Logic
+        function accepted() {
+            document.getElementById('proposal-img').src = "yes.jpg";
+            document.getElementById('proposal-text').innerHTML = "Yehi sunna tha! I love you so much Ishika! ❤️✨";
+            document.getElementById('btn-box').style.display = 'none';
+            
+            // Show romantic shayari on success
+            document.getElementById('success-shayari').style.display = 'block';
+            
+            // Background change to romantic panda gif
+            document.getElementById('proposal-img-box').innerHTML = '<img src="gif3.gif" style="width:100%; height:100%; object-fit:cover;">';
+            
+            // Extra heart rain effect
+            setInterval(createHeart, 300);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '100vh';
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+            heart.style.color = '#ff3366';
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '999';
+            heart.style.transition = 'transform 3s linear, opacity 3s';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.style.transform = `translateY(-110vh) translateX(${Math.random() * 100 - 50}px) rotate(${Math.random() * 360}deg)`;
+                heart.style.opacity = '0';
+            }, 50);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 3000);
         }
     </script>
 </body>
 </html>
+
